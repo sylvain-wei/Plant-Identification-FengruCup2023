@@ -327,7 +327,8 @@ class Encyclopedia():
             text = self.receive_text_message()
             if self.attris_list[answer_id] == '中文名':
                 # 如果是根据中文名查找植物
-                query_c_name_node = 'MATCH (s:Species {中文名: "%s" }) RETURN s.name'%text
+                # query_c_name_node = 'MATCH (s:Species {中文名: "%s" }) RETURN s.name'%text
+                query_c_name_node = "MATCH (s:Species) WHERE s.`中文名` contains '%s' RETURN s.name"%text
                 result_c_name_node = self.graph.run(query_c_name_node)
                 result_lst = [record["s.name"] for record in result_c_name_node]
                 if result_lst == []:
@@ -407,5 +408,5 @@ class Encyclopedia():
 
 pedia = Encyclopedia()
 pedia.query('Chrysanthemum indicum')
-pedia.integrate_information(['Diospyros kaki', "Diospyros lotus"])
+# pedia.integrate_information(['Diospyros kaki', "Diospyros lotus"])
 pedia.query_by_basic_attris()
